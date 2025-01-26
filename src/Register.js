@@ -1,49 +1,50 @@
 import {useEffect, useState} from "react";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Register(){
-    const[number,setNumber]=useState(55)
-    const [timer,setTimer]=useState(0)
 
+const [name, setName] = useState("");
+const [lastName,setLastName] = useState("");
+const[username,setUsername] = useState("");
+const [password, setPassword] = useState("");
+const navigate = useNavigate();
+const [isUserNameTaken, setIsUserNameTaken] = useState(false);
 
-    useEffect(() => {
-      const intervalId = setInterval(()=>{
-            setTimer((prevTimer) => prevTimer + 1)
-       },1000)
-
-       return () => clearInterval(intervalId)
-
-    }, []);
-
-
-
-
-
-    function plus(){
-        if (number<200){
-            setNumber(number+1)
+        const register = async ()=>{
+            const response = await axios.get("http://localhost:8080/register?firstName="+name + "&lastName="+lastName
+            +"&username="+username+"&password="+password);
+            if (response.data.success===true){
+                navigate("/login");
+            }else {
+                if (response.data.errorCode===1001){
+                    setIsUserNameTaken(true)
+                }
+            }
         }
-    }
- const minus=()=>{
-   if (number>50){
-       setNumber(number-1)
-   }
- }
+
 
     return(
         <div>
             <h1>Register</h1>
-
-            <input
-            value={number}
-            type={"number"}
-            />
-          <button onClick={plus}>+</button>
-            <button onClick={minus}>-</button>
-          <div>
-              {timer}
-          </div>
-
+            <div>
+                <label>firstName:</label>
+                <input type={"text"} value={name} onChange={(event) => setName(event.target.value)}/>
+                <br/>
+                <label>lastName:</label>
+                <input type={"text"} value={lastName} onChange={(event) => setLastName(event.target.value)}/>
+                <br/>
+                <label>username:</label>
+                <input type={"text"} value={username} onChange={(event) => setUsername(event.target.value)}/>
+                <br/>
+                <label>password:</label>
+                <input type={"password"} value={password} onChange={(event) => setPassword(event.target.value)}/>
+                <br/>
+                {isUserNameTaken===true&&<div style={{color:'red'}}>username taken</div>}
+                <button onClick={register}>Register</button>
+            </div>
         </div>
     )
 }
+
 export default Register;
