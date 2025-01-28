@@ -10,6 +10,7 @@ import Image from "./Image";
 import TodoList from "./TodoList";
 import UserProfile from "./UserProfile";
 import Math from "./Math";
+import Numbers from "./Numbers";
 
 function App() {
     const [toHomePage,setToHomePage] = useState("false");
@@ -30,6 +31,7 @@ function App() {
                   <Route path={"/image"} element={<Image/>}/>
                   <Route path={"/todo"} element={<TodoList/>}/>
                   <Route path={"/math"} element={<Math/>}/>
+                  <Route path={"/numbers"} element={<Numbers/>}/>
               </Routes>
           </BrowserRouter>
       </div>
